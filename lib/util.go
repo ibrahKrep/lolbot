@@ -30,6 +30,12 @@ func GetHttp(url string) ([]byte, *http.Response) {
 	return data, res
 }
 
+func SaveMediaFromUrl(url, source string) bool {
+	data, _ := GetHttp(url)
+	ok := SaveMedia(source, data)
+	return ok
+}
+
 func RandStr(length int) string {
 	letters := []rune("abcdefghijklmnopqrstuvfxyz")
 	rn := make([]rune, length)

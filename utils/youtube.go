@@ -8,21 +8,23 @@ import (
 	"github.com/kkdai/youtube/v2"
 )
 
-func GetStream(url, filename, mediatype string) {
+func GetStream(url, filename, mediatype string) *youtube.Video {
+	var info *youtube.Video
+
 	if mediatype == "video" {
 		video_id, err := youtube.ExtractVideoID(url)
 		if err != nil {
 			panic(err)
 		}
 		client := youtube.Client{}
-		video, err := client.GetVideo(video_id)
+		info, err = client.GetVideo(video_id)
 		if err != nil {
 			panic(err)
 		}
-		formats := video.Formats.WithAudioChannels()
+		formats := info.Formats.WithAudioChannels().Type("video/mp4")
 		fmt.Println(formats)
 
-		stream, _, err := client.GetStream(video, &formats[0])
+		stream, _, err := client.GetStream(info, &formats[0])
 		file, err := os.Create(filename)
 		if err != nil {
 			panic(err)
@@ -39,13 +41,12 @@ func GetStream(url, filename, mediatype string) {
 			panic(err)
 		}
 		client := youtube.Client{}
-		video, err := client.GetVideo(video_id)
+		info, err = client.GetVideo(video_id)
 		if err != nil {
 			panic(err)
 		}
-		formats := video.Formats.WithAudioChannels().Type("audio/mp4").Quality("tiny")
-		fmt.Println(formats)
-		stream, _, err := client.GetStream(video, &formats[1])
+		formats := info.Formats.WithAudioChannels().Type("audio/mp4").Quality("tiny")
+		stream, _, err := client.GetStream(info, &formats[1])
 		file, err := os.Create(filename)
 		if err != nil {
 			panic(err)
@@ -57,4 +58,5 @@ func GetStream(url, filename, mediatype string) {
 		}
 		fmt.Println("SUCCESS GET AUDIO FROM YOUTUBE")
 	}
+	return info
 }

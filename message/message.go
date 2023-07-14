@@ -31,12 +31,13 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 	switch cmd {
 	case prefix + "menu":
 		menu := `
+
 *『DOWNLOADER』*
 
 ➠ .youtube <url>
-  ➥ Untuk mendownload video youtube.
-➠ youtubeaudio <url>
-  ➥ Untuk mendownload audio video youtube.
+    ➥ Untuk mendownload video youtube.
+➠ .youtubeaudio <url>
+    ➥ Untuk mendownload audio video youtube.
 `
 		simple.Reply(from, strings.Trim(menu, "\n"))
 	case prefix + "get":
@@ -61,11 +62,24 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 		}
 	case prefix + "youtube":
 		randm := "./tmp/" + lib.RandStr(4) + ".mp4"
-		utils.GetStream(args, randm, "video")
-		simple.SendVideo(from, "*DONE*", randm, true)
+		res := utils.GetStream(args, randm, "video")
+		msg := fmt.Sprintf(`
+*TITLE:* %v
+*CHANNEL:* %v
+*DURATION:* %v
+`, res.Title, res.Author, res.Duration.String())
+		simple.SendVideo(from, msg, randm, true)
 	case prefix + "youtubeaudio":
 		randm := "./tmp/" + lib.RandStr(4) + ".mp4"
-		utils.GetStream(args, randm, "audio")
+		res := utils.GetStream(args, randm, "audio")
+		radm := "./tmp/" + lib.RandStr(4) + ".png"
+		lib.SaveMediaFromUrl(res.Thumbnails[0].URL, radm)
+		msg := fmt.Sprintf(`
+*TITLE:* %v
+*CHANNEL:* %v
+*DURATION:* %v
+`, res.Title, res.Author, res.Duration.String())
+		simple.SendImage(from, msg, radm, true)
 		simple.SendAudio(from, randm, false, true)
 	}
 }
