@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"os/exec"
 )
 
 func SaveMedia(name string, data []byte) bool {
@@ -38,4 +39,13 @@ func RandStr(length int) string {
 	}
 
 	return string(rn)
+}
+
+func Exec(name string, args []string) string {
+	cmd := exec.Command(name, args...)
+	output, err := cmd.Output()
+	if err != nil {
+		return err.Error()
+	}
+	return string(output)
 }

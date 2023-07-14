@@ -114,6 +114,60 @@ func (simple *Simple) SendImage(jid types.JID, text string, source string, quote
 	}
 }
 
+func (simple *Simple) SendAudio(jid types.JID, source string, ptt, quoted bool) {
+	data, err := os.ReadFile(source)
+	if err != nil {
+		panic(err)
+	}
+	uploaded, err := simple.Wcli.Upload(context.Background(), data, whatsmeow.MediaAudio)
+	if err != nil {
+		panic(err)
+	}
+	if quoted {
+		msg := &waProto.Message{
+			AudioMessage: &waProto.AudioMessage{
+				Url:           proto.String(uploaded.URL),
+				Mimetype:      proto.String("audio/mp4"),
+				FileSha256:    uploaded.FileSHA256,
+				FileLength:    proto.Uint64(uint64(len(data))),
+				Ptt:           proto.Bool(ptt),
+				MediaKey:      uploaded.MediaKey,
+				FileEncSha256: uploaded.FileEncSHA256,
+				DirectPath:    proto.String(uploaded.DirectPath),
+				ContextInfo: &waProto.ContextInfo{
+					StanzaId:      proto.String(simple.Msg.Info.ID),
+					Participant:   proto.String(simple.Msg.Info.Sender.String()),
+					QuotedMessage: simple.Msg.Message,
+				},
+			},
+		}
+		resp, err := simple.Wcli.SendMessage(context.Background(), jid, msg)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(resp)
+	} else {
+		msg := &waProto.Message{
+			AudioMessage: &waProto.AudioMessage{
+				Url:           proto.String(uploaded.URL),
+				Mimetype:      proto.String("audio/mp4"),
+				FileSha256:    uploaded.FileSHA256,
+				FileLength:    proto.Uint64(uint64(len(data))),
+				Ptt:           proto.Bool(ptt),
+				MediaKey:      uploaded.MediaKey,
+				FileEncSha256: uploaded.FileEncSHA256,
+				DirectPath:    proto.String(uploaded.DirectPath),
+			},
+		}
+		resp, err := simple.Wcli.SendMessage(context.Background(), jid, msg)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(resp)
+
+	}
+}
+
 func (simple *Simple) SendVideo(jid types.JID, text string, source string, quoted bool) {
 	data, err := os.ReadFile(source)
 	if err != nil {
@@ -157,11 +211,6 @@ func (simple *Simple) SendVideo(jid types.JID, text string, source string, quote
 				FileEncSha256: uploaded.FileEncSHA256,
 				FileSha256:    uploaded.FileSHA256,
 				FileLength:    proto.Uint64(uint64(len(data))),
-				ContextInfo: &waProto.ContextInfo{
-					StanzaId:      proto.String(simple.Msg.Info.ID),
-					Participant:   proto.String(simple.Msg.Info.Sender.String()),
-					QuotedMessage: simple.Msg.Message,
-				},
 			},
 		}
 		res, err := simple.Wcli.SendMessage(context.Background(), jid, msg)
