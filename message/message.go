@@ -20,6 +20,7 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 	simple := lib.NewSimple(cli, msg)
 	from := simple.Msg.Info.Chat
 	sender := simple.Msg.Info.Sender
+	pushname := simple.Msg.Info.PushName
 	commands := strings.Split(simple.GetCmd(), " ")
 	cmd := strings.Join(commands[:1], "")
 	args := strings.Join(commands[1:], " ")
@@ -30,7 +31,9 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 
 	switch cmd {
 	case prefix + "menu":
-		menu := `
+		menu := fmt.Sprintf(`
+*Halo,* %v.
+*Silakan gunakan fitur di bawah ini.*
 
 *『DOWNLOADER』*
 
@@ -38,13 +41,14 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
     ➥ Untuk mendownload video youtube.
 ➠ .youtubeaudio <url>
     ➥ Untuk mendownload audio video youtube.
-
+➠ .tiktok <url>
+    ➥ Untuk mendownload video tiktok.
 
 *『HTTP METHOD』*
 
 ➠ .get <url>
     ➥ Untuk mendapatkan response data dari website.
-`
+`, pushname)
 		simple.Reply(from, strings.Trim(menu, "\n"))
 	case prefix + "get":
 		body, res := lib.GetHttp(args)
@@ -94,5 +98,8 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 		lib.SaveMedia(random, data)
 		lib.Exec("ffmpeg", []string{"-i", random, random2})
 		simple.SendSticker(from, random2)
+	case prefix + "tiktok":
+		res := utils.Tiktok(args)
+		simple.SendVideo(from, "*DONE*", res, true)
 	}
 }
