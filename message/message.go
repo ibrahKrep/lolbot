@@ -38,6 +38,12 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
     ➥ Untuk mendownload video youtube.
 ➠ .youtubeaudio <url>
     ➥ Untuk mendownload audio video youtube.
+
+
+*『HTTP METHOD』*
+
+➠ .get <url>
+    ➥ Untuk mendapatkan response data dari website.
 `
 		simple.Reply(from, strings.Trim(menu, "\n"))
 	case prefix + "get":
@@ -81,5 +87,12 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 `, res.Title, res.Author, res.Duration.String())
 		simple.SendImage(from, msg, radm, true)
 		simple.SendAudio(from, randm, false, true)
+	case prefix + "sticker":
+		data, _ := simple.Wcli.Download(simple.Msg.Message.GetImageMessage())
+		random := "./tmp/" + lib.RandStr(4) + ".png"
+		random2 := "./tmp/" + lib.RandStr(4) + ".webp"
+		lib.SaveMedia(random, data)
+		lib.Exec("ffmpeg", []string{"-i", random, random2})
+		simple.SendSticker(from, random2)
 	}
 }

@@ -114,6 +114,35 @@ func (simple *Simple) SendImage(jid types.JID, text string, source string, quote
 	}
 }
 
+func (simple *Simple) SendSticker(jid types.JID, source string) {
+	data, err := os.ReadFile(source)
+	if err != nil {
+		panic(err)
+	}
+	uploaded, err := simple.Wcli.Upload(context.Background(), data, whatsmeow.MediaImage)
+	if err != nil {
+		panic(err)
+	}
+	msg := &waProto.Message{
+		StickerMessage: &waProto.StickerMessage{
+			Url:           proto.String(uploaded.URL),
+			Mimetype:      proto.String(http.DetectContentType(data)),
+			FileSha256:    uploaded.FileSHA256,
+			FileLength:    proto.Uint64(uint64(len(data))),
+			MediaKey:      uploaded.MediaKey,
+			FileEncSha256: uploaded.FileEncSHA256,
+			Width:         proto.Uint32(uint32(64)),
+			Height:        proto.Uint32(uint32(64)),
+			IsAnimated:    proto.Bool(false),
+		},
+	}
+	resp, err := simple.Wcli.SendMessage(context.Background(), jid, msg)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(resp)
+}
+
 func (simple *Simple) SendAudio(jid types.JID, source string, ptt, quoted bool) {
 	data, err := os.ReadFile(source)
 	if err != nil {

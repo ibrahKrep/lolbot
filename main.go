@@ -11,11 +11,10 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mdp/qrterminal/v3"
-	"google.golang.org/protobuf/proto"
+
+	"github.com/gofiber/fiber/v2"
 
 	"go.mau.fi/whatsmeow"
-	waProto "go.mau.fi/whatsmeow/binary/proto"
-	"go.mau.fi/whatsmeow/store"
 	"go.mau.fi/whatsmeow/store/sqlstore"
 	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
@@ -58,6 +57,13 @@ func main() {
 			panic(err)
 		}
 	}
+	app := fiber.New()
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("bot on")
+	})
+
+	app.Listen(":5000")
 	c := make(chan os.Signal, 1)
 	go signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	<-c
@@ -66,8 +72,6 @@ func main() {
 }
 
 func init() {
-	store.DeviceProps.PlatformType = waProto.DeviceProps_ANDROID_PHONE.Enum()
-	store.DeviceProps.Os = proto.String("SLAMET BOT")
 }
 
 func eventHandler(evt interface{}) {
