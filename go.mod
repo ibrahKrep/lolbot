@@ -8,6 +8,7 @@ require (
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/dlclark/regexp2 v1.9.0 // indirect
 	github.com/dop251/goja v0.0.0-20230402114112-623f9dda9079 // indirect
+	github.com/go-rod/rod v0.113.4 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/gofiber/fiber/v2 v2.47.0 // indirect
 	github.com/google/pprof v0.0.0-20230406165453-00490a63f317 // indirect
@@ -28,6 +29,11 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.48.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
+	github.com/ysmood/fetchup v0.2.3 // indirect
+	github.com/ysmood/goob v0.4.0 // indirect
+	github.com/ysmood/got v0.34.1 // indirect
+	github.com/ysmood/gson v0.7.3 // indirect
+	github.com/ysmood/leakless v0.8.0 // indirect
 	go.mau.fi/libsignal v0.1.0 // indirect
 	go.mau.fi/whatsmeow v0.0.0-20230710094417-93091c7024da // indirect
 	golang.org/x/crypto v0.8.0 // indirect

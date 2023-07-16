@@ -44,6 +44,18 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 ➠ .tiktok <url>
     ➥ Untuk mendownload video tiktok.
 
+*『MAKER』*
+
+➠ .sticker
+    ➥ Untuk membuat stiker.
+    kirim gambar dengan caption .sticker
+
+*『OTHER』*
+
+➠ .ssweb <url>
+    ➥ Screenshot web page.
+
+
 *『HTTP METHOD』*
 
 ➠ .get <url>
@@ -61,6 +73,11 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 			randm := lib.RandStr(4)
 			lib.SaveMedia("./tmp/"+randm+".jpeg", body)
 			simple.SendImage(from, "", "./tmp/"+randm+".jpeg", true)
+		case "video/mp4":
+			randm := lib.RandStr(4)
+			lib.SaveMedia("./tmp/"+randm+".mp4", body)
+			simple.SendVideo(from, "", "./tmp/"+randm+".mp4", true)
+
 		default:
 			simple.Reply(from, string(res.Header.Get("Content-Type")))
 			simple.Reply(from, string(body))
@@ -96,10 +113,13 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 		random := "./tmp/" + lib.RandStr(4) + ".png"
 		random2 := "./tmp/" + lib.RandStr(4) + ".webp"
 		lib.SaveMedia(random, data)
-		lib.Exec("ffmpeg", []string{"-i", random, random2})
-		simple.SendSticker(from, random2)
+		lib.Exec("cwebp", []string{random, "-o", random2})
+		simple.SendSticker(from, random2, true)
 	case prefix + "tiktok":
 		res := utils.Tiktok(args)
 		simple.SendVideo(from, "*DONE*", res, true)
+	case prefix + "ssweb":
+		res := utils.SsWeb(args)
+		simple.SendImage(from, "", res, true)
 	}
 }
