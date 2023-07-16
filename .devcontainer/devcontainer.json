@@ -5,6 +5,7 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "18"
     },
-    "ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {}
+    "ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {},
+    "ghcr.io/jckimble/devcontainer-features/ngrok:3": {}
   }
 }
