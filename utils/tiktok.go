@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"lol/lib"
+	"github.com/ibrahKrep/lolbot/lib"
 )
 
 func Tiktok(urltiktok string) string {

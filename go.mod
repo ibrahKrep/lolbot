@@ -1,4 +1,4 @@
-module lol
+module github.com/ibrahKrep/lolbot
 
 go 1.20
 

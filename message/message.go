@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"lol/lib"
-	"lol/utils"
+	"github.com/ibrahKrep/lolbot/lib"
+	"github.com/ibrahKrep/lolbot/utils"
 
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/types/events"
@@ -25,9 +25,8 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 	cmd := strings.Join(commands[:1], "")
 	args := strings.Join(commands[1:], " ")
 
-	fmt.Printf("From: %v\nSender: %v\n", from, sender)
-	fmt.Println(simple.GetCmd())
-	fmt.Println(simple.Msg.Message)
+	fmt.Printf("From: %v\nSender: %v\nMessage: %v\n", from, sender, simple.GetCmd())
+	//fmt.Println(simple.Msg.Message)
 
 	switch cmd {
 	case prefix + "menu":
@@ -54,7 +53,6 @@ func Message(cli *whatsmeow.Client, msg *events.Message) {
 
 ➠ .ssweb <url>
     ➥ Screenshot web page.
-
 
 *『HTTP METHOD』*
 

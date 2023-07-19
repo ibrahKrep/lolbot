@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"lol/message"
+	"github.com/ibrahKrep/lolbot/message"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/mdp/qrterminal/v3"
