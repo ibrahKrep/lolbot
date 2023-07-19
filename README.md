@@ -42,6 +42,7 @@ apt update
 ```bash
 apt update
 apt upgrade
+sudo apt install webp
 sudo apt install chromium-browser
 sudo snap install golang
 ```
