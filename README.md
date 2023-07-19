@@ -21,6 +21,7 @@ Download golang [in here](https://go.dev/doc/install)
 pkg install golang -y
 pkg install proot-distro -y
 pkg install git -y
+pkg install libwebp
 proot-distro install ubuntu
 proot-distro login ubuntu
 apt install gnupg -y
