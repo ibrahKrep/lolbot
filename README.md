@@ -60,5 +60,24 @@ this example sending message
 ### Sending Message
 
 ```
+// sending text
+simple.Send(jid, "Hello")
+
+// reply message
+simple.Reply(jid, "How are you")
+
+// send image
+simple.SendImage(jid types.JID, text string, source string, quoted bool)
+
+simple.SendImage(jid, "Hello", "./tmp/random.png", true)
+
+// send audio
+simple.SendAudio(jid types.JID, source string, ptt bool, quoted bool)
+
+// send video
+simple.SendVideo(jid types.JID, text string, source string, quoted bool)
+
+// send sticker
+simple.SendSticker(jid types.JID, source string, quoted bool)
 
 ```
