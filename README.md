@@ -61,7 +61,7 @@ after installing and run, type `.menu` and send to bot.
 this example sending message
 ### Sending Message
 
-```
+```go
 // sending text
 simple.Send(jid, "Hello")
 
